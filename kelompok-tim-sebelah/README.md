@@ -21,3 +21,7 @@ git commit -m “feat: new file for logic xyz”
 - Lakukan push code ke cloud github
 Command line
 git push
+
+
+bikin branch baru
+- 
