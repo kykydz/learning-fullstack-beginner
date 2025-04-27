@@ -19,11 +19,21 @@ Tutorial membuat branch baru untuk keperluan code collaboration:
 6. Lakukan push code ke cloud github
       - git push
       - git push origin kelompok-tim-sebelah
-========================================================================================
-pull and push ke git hub dari VSCode
-1. git pull origin kelompok-tim-sebelah -> ambil perubahan terbaru dari branch kelompok-tim-sebelah (di terminal)
-2. git branch {memastikan di branch mana} -> dengan ada tanda (*) (di terminal)
-3. git checkout kelompok-tim-sebelah {masuk ke brench yg kita mau} (di terminal)
-4. lakukan perubahan, mau bikin folder baru bisa, drag and drop gambar bisa, edit readme bisa.
-5. buat commit message dulu di Source Control (Ctrl+Shift+G)>CHANGES>tulis pesan perubahan, lalu ceklis
-6. git push atau git push origin kelompok-tim-sebelah (di terminal)
+
+*ini jika sudah clone repo project di github
+pull and push ke git hub dari fitur VSCode
+- git pull origin kelompok-tim-sebelah -> ambil perubahan terbaru dari branch kelompok-tim-sebelah (di terminal)
+- git branch {memastikan di branch mana} -> dengan ada tanda (*) (di terminal)
+- git checkout kelompok-tim-sebelah {masuk ke brench yg kita mau} (di terminal)
+- lakukan perubahan, mau bikin folder baru bisa, drag and drop gambar bisa, edit readme bisa.
+- buat commit message dulu di Source Control (Ctrl+Shift+G)>CHANGES>tulis pesan perubahan, lalu ceklis
+- git push atau git push origin kelompok-tim-sebelah (di terminal)
+
+kalau dari full terminal
+- git pull atau git pull origin kelompok-tim-sebelah
+- git branch (cek posisi sekarang)
+- git checkout kelompok-tim-sebelah
+  (lakukan perubahan: edit README.md, tambah gambar, buat folder baru)
+- git add .
+- git commit -m "perubahan apa yang dilakukan"
+- git push atau git push origin kelompok-tim-sebelah
