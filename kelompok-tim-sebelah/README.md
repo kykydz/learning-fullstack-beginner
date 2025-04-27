@@ -6,14 +6,18 @@ Tutorial membuat branch baru untuk keperluan code collaboration:
    - git checkout -b my-new-branch
 3. Buat file baru README.md, kemudian lakukan pengeditan
 4. Tambahkan ke dalam list of changes file dalam git
+
    a. Command line 
       - Tambahkan semua file atau update file semuanya: git add . 
       - Tambahkan hanya beberapa file yg akan di update: git add file-1 file-2
+
    b. VSCode UI
       - Klik tombol “+” pada file yang akan ditambahkan
 5. Lakukan commit (check point pengerjaan untuk file yang diupdate)
+
    a. VSCode UI - Source Control
       - Edit commit message
+
    b. Command line
       - git commit -m “perubahan apa yang dilakukan”
 6. Lakukan push code ke cloud github
@@ -21,6 +25,7 @@ Tutorial membuat branch baru untuk keperluan code collaboration:
       - git push origin kelompok-tim-sebelah
 
 *ini jika sudah clone repo project di github
+
 pull and push ke git hub dari fitur VSCode
 - git pull origin kelompok-tim-sebelah -> ambil perubahan terbaru dari branch kelompok-tim-sebelah (di terminal)
 - git branch {memastikan di branch mana} -> dengan ada tanda (*) (di terminal)
@@ -33,6 +38,7 @@ kalau dari full terminal
 - git pull atau git pull origin kelompok-tim-sebelah
 - git branch (cek posisi sekarang)
 - git checkout kelompok-tim-sebelah
+  
   (lakukan perubahan: edit README.md, tambah gambar, buat folder baru)
 - git add .
 - git commit -m "perubahan apa yang dilakukan"
