@@ -17,4 +17,6 @@ git commit -n "commit massage"
 
 git push origin kik-branch
 
+menambahkan folder
+
 
