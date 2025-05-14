@@ -5,3 +5,5 @@ Asal: Riau
 2. edit filenya
 3. git commit -m "commit massage"
 4. git push origin kik-branch
+
+a
