@@ -35,32 +35,21 @@ b. Command line
 
 * git push origin kudalumping (ini jika sudah clone repo project di GitHub)
 
-* pull and push ke git hub dari fitur VSCode
+a. pull and push ke git hub dari fitur VSCode
 
 - git pull origin kudalumping -> ambil perubahan terbaru dari branch kualmping (di terminal)
-
 - git branch {memastikan di branch mana} -> dengan ada tanda (*) (di terminal)
-
 - git checkout kudalumping {masuk ke brench yg kita mau} (di terminal)
-
 - lakukan perubahan, mau bikin folder baru bisa, drag and drop gambar bisa, edit readme bisa.
-
 - buat commit message dulu di Source Control (Ctrl+Shift+G)>CHANGES>tulis pesan perubahan, lalu ceklis
-
 - git push atau git push origin kudalumping (di terminal)
 
-* kalau dari full terminal
+b. kalau dari full terminal
 
 - git pull atau git pull origin kudalumping
-
 - git branch (cek posisi sekarang)
-
 - git checkout kudalumping
-
 - (lakukan perubahan: edit README.md, tambah gambar, buat folder baru)
-
 - git add .
-
 - git commit -m "perubahan apa yang dilakukan"
-
 - git push atau git push origin kudalumping
