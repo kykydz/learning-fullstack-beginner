@@ -10,22 +10,22 @@ Tutorial membuat branch baru untuk keperluan code collaboration:
 
 4. Tambahkan ke dalam list of changes file dalam git
 
-* Command line
+a. Command line
 
 - Tambahkan semua file atau update file semuanya: git add .
 - Tambahkan hanya beberapa file yg akan di update: git add file-1 file-2
 
-* VSCode UI
+b. VSCode UI
 
 - Klik tombol “+” pada file yang akan ditambahkan
 
 5. Lakukan commit (check point pengerjaan untuk file yang diupdate)
 
-* VSCode UI - Source Control
+a. VSCode UI - Source Control
 
 - Edit commit message
 
-* Command line
+b. Command line
 
 - git commit -m “perubahan apa yang dilakukan”
 
@@ -41,7 +41,7 @@ Tutorial membuat branch baru untuk keperluan code collaboration:
 
 - git branch {memastikan di branch mana} -> dengan ada tanda (*) (di terminal)
 
-- git checkout kelompok-tim-sebelah {masuk ke brench yg kita mau} (di terminal)
+- git checkout kudalumping {masuk ke brench yg kita mau} (di terminal)
 
 - lakukan perubahan, mau bikin folder baru bisa, drag and drop gambar bisa, edit readme bisa.
 
@@ -51,11 +51,11 @@ Tutorial membuat branch baru untuk keperluan code collaboration:
 
 * kalau dari full terminal
 
-- git pull atau git pull origin kelompok-tim-sebelah
+- git pull atau git pull origin kudalumping
 
 - git branch (cek posisi sekarang)
 
-- git checkout kelompok-tim-sebelah
+- git checkout kudalumping
 
 - (lakukan perubahan: edit README.md, tambah gambar, buat folder baru)
 
