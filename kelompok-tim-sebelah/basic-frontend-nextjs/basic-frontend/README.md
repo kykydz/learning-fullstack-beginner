@@ -1,6 +1,6 @@
 CATATAN UNTUK KELOMPOK TIM SEBELAH (membuat profile)
 1. fokus ke folder src/app/profile/page.tsx
-2. kopas <div classname = border p-4 rounded shadow flex items-center gap-4> sampai akhir, isi profil masing2
+2. kopas "div classname = border p-4 rounded shadow flex items-center gap-4" sampai akhir, isi profil masing2
 3. foto dimasukkan ke public => public/profil.jpg
 
 
