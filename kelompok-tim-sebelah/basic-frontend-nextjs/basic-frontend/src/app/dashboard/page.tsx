@@ -54,7 +54,6 @@ export default async function DashboardPage() {
 }
 
 
-
 // //ini ada useEffect, ga ada bedanya (?)
 // 'use client';
 
