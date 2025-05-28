@@ -2,6 +2,7 @@
 //Import modul
 //affa, joice, umar
 import Link from "next/link";
+import DashboardLayout from '@/components/templates/DashboardLayout';
 
 //Tipe Data (User)
 type User = {
@@ -20,7 +21,7 @@ export default async function DashboardPage() {
   const users: User[] = await res.json();
 
   return (
-    <div className="p-8">
+    <DashboardLayout>
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
       <table className="w-full border border-gray-300">
         <thead>
@@ -49,7 +50,7 @@ export default async function DashboardPage() {
           ))}
         </tbody>
       </table>
-    </div>
+    </DashboardLayout>
   );
 }
 
