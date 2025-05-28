@@ -6,12 +6,12 @@ const port = 3000; // Port untuk server Anda
 // Middleware untuk parsing JSON body
 app.use(express.json());
 
-// Contoh endpoint GET
+// Contoh endpoint GET (API)
 app.get('/', (req, res) => {
  res.send('Halo dari server Express TypeScript!');
 });
 
-// Contoh endpoint POST
+// Contoh endpoint POST (API)
 app.post('/api/data', (req, res) => {
  const { message } = req.body;
  if (message) {
