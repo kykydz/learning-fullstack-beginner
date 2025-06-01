@@ -25,7 +25,7 @@ export default async function DashboardPage() {
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
       <table className="w-full border border-gray-300">
         <thead>
-          <tr className="bg-gray-200">
+          <tr className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
             <th className="border p-2">Name</th>
             <th className="border p-2">Email</th>
             <th className="border p-2">Company</th>
