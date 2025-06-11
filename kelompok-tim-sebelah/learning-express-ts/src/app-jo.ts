@@ -65,7 +65,7 @@ import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 
 const app = express();
-const port = 3000;
+const port = 7777;
 
 // Middleware untuk parsing JSON body
 app.use(bodyParser.json());
