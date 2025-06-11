@@ -1,4 +1,6 @@
 // import express from 'express';
+// import { User } from './entities/user.entity';
+// import { DataSource } from 'typeorm';
 
 // const app = express();
 // const port = 3000; // Port untuk server Anda
@@ -56,42 +58,85 @@
 //  console.log(`Server berjalan di http://localhost:${port}`);
 // });
 
+import 'reflect-metadata';
 import express from 'express';
-import { AppDataSource } from './data-source';
+import bodyParser from 'body-parser';
+import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 
 const app = express();
-app.use(express.json());
+const port = 3000;
 
-AppDataSource.initialize()
-  .then(() => {
+// Middleware untuk parsing JSON body
+app.use(bodyParser.json());
+
+// Inisialisasi PostgreSQL
+const appDataSource = new DataSource({
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'affa',        // Ganti dengan username PostgreSQL kamu
+  password: '',            // Ganti jika ada password PostgreSQL
+  database: 'postgres',    // Ganti jika pakai nama DB lain
+  entities: [User],
+  synchronize: true,       // Jangan aktifkan di production
+});
+
+(async () => {
+  try {
+    await appDataSource.initialize();
     console.log('Database connected');
 
-    // GET: read users
+    // === [GET] READ ===
     app.get('/users', async (req, res) => {
-      const users = await AppDataSource.getRepository(User).find({
+      const user = await appDataSource.getRepository(User).find({
         where: { name: 'John Doe' },
         take: 10,
         order: { id: 'ASC' },
       });
-      res.status(200).send(users);
+      console.log('Fetched users:', user);
+      res.status(200).send(user);
     });
 
-    // POST: create user
-    app.post('/users', async (req, res) => {
+    // === [POST] CREATE/UPDATE by ID ===
+    app.post('/users/:id', async (req, res) => {
+      const id = Number(req.params.id);
       const { name, email } = req.body;
-      const newUser = await AppDataSource.getRepository(User).save({ name, email });
-      res.status(201).send(newUser);
+      try {
+        const updatedUser = await appDataSource.getRepository(User).save({
+          id,
+          name,
+          email,
+        });
+        res.status(200).send(updatedUser);
+      } catch (error) {
+        console.error('Error creating/updating user:', error);
+        res.status(500).send('Internal Server Error');
+      }
     });
 
-    // PATCH: update user
+    // === [PATCH] UPDATE ONLY ===
     app.patch('/users/:id', async (req, res) => {
       const id = Number(req.params.id);
       const { name, email } = req.body;
-      const result = await AppDataSource.getRepository(User).update({ id }, { name, email });
-      res.status(200).send(result);
+      try {
+        const result = await appDataSource
+          .getRepository(User)
+          .update({ id }, { name, email });
+
+        res.status(200).send(result);
+      } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).send('Internal Server Error');
+      }
     });
 
-    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-  })
-  .catch((error) => console.error('Database connection error:', error));
+    // Start server
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+
+  } catch (err) {
+    console.error('Error during Data Source initialization', err);
+  }
+})();
