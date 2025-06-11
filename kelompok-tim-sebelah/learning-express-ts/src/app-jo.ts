@@ -74,10 +74,10 @@ app.use(bodyParser.json());
 const appDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
-  port: 5433,
-  username: 'affa',        // Ganti dengan username PostgreSQL kamu
-  password: 'affa',            // Ganti jika ada password PostgreSQL
-  database: 'express_ts',    // Ganti jika pakai nama DB lain
+  port: 5432,
+  username: 'joice',        // Ganti dengan username PostgreSQL kamu
+  password: 'joice',            // Ganti jika ada password PostgreSQL
+  database: 'expressts',    // Ganti jika pakai nama DB lain
   entities: [User],
   synchronize: true,       // Jangan aktifkan di production
 });
