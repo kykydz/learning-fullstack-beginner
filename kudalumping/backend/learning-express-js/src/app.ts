@@ -1,43 +1,50 @@
-import express from 'express';
-import { sequelize } from './database';
-import { User } from './models/user';
+import express, { Request, Response } from 'express';
+import { DataSource } from 'typeorm';
+import { User } from './entities/user.entity';
 
 const app = express();
 const port = 3000;
 
-console.log('✅ src/app.ts is running...');
-
-// 1. Middleware parsing JSON
 app.use(express.json());
 
-// 2. Logger (harus sebelum route)
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next(); // PENTING
-});
-
-// 3. Tes route
-app.get('/', (_req, res) => {
-  res.send('Hello from Express!');
-});
-
-// 4. Rute-rute utama
-app.post('/users', async (req, res) => {
+(async () => {
   try {
-    const { name, email } = req.body;
-    const user = await User.create({ name, email });
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(500).json({ error: 'Gagal menambahkan user', detail: err });
+    const appDataSource = new DataSource({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'PRAKREKWEB',
+      entities: [User],
+    });
+
+    await appDataSource.initialize();
+    console.log('Database connected');
+
+    // ✅ Semua route di dalam sini
+    app.get('/users', async (req: Request, res: Response) => {
+      const users = await appDataSource.getRepository(User).find();
+      res.status(200).json(users);
+    });
+
+    app.post('/users', async (req: Request, res: Response) => {
+      const { name, email } = req.body;
+      const newUser = await appDataSource.getRepository(User).save({ name, email });
+      res.status(201).json(newUser);
+    });
+
+    app.patch('/users/:id', async (req: Request, res: Response) => {
+      const id = Number(req.params.id);
+      const { name, email } = req.body;
+      const updated = await appDataSource.getRepository(User).update({ id }, { name, email });
+      res.status(200).json(updated);
+    });
+
+    app.listen(port, () => {
+      console.log(`Server berjalan di http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Terjadi kesalahan:', error);
   }
-});
-
-app.get('/users', async (_req, res) => {
-  const users = await User.findAll();
-  res.json(users);
-});
-
-// 5. Start server
-app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
-});
+})(); // << Pastikan ini ada!
