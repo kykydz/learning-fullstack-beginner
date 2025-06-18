@@ -1,9 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+.next
+node_modules
+node_modules/
+*node_modules*
+**/node_modules/
 # dependencies
 /node_modules
-*/node_modules/*
-/kelompok-tim-sebelah/learning-express-ts/node_modules
 /.pnp
 .pnp.*
 .yarn/*
