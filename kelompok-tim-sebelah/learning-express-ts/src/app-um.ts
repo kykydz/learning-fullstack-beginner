@@ -78,8 +78,8 @@ const appDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'joice',        // Ganti dengan username PostgreSQL kamu
-  password: 'joice',            // Ganti jika ada password PostgreSQL
+  username: 'umar',        // Ganti dengan username PostgreSQL kamu
+  password: '1234',            // Ganti jika ada password PostgreSQL
   database: 'expressts',    // Ganti jika pakai nama DB lain
   entities: [User],
   synchronize: true,       // Jangan aktifkan di production
