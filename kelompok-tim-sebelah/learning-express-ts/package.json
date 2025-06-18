@@ -14,12 +14,14 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.0",
     "postgres": "^3.4.7",
     "typeorm": "^0.3.24"
   },
   "devDependencies": {
     "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.15.23",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
