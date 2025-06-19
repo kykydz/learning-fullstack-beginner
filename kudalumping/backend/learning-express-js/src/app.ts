@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import jwt from 'jsonwebtoken';
+import { jwtMiddleware } from './middleware/auth';
 
 const app = express();
 const port = 3000;
@@ -29,7 +30,7 @@ app.use(express.json());
     res.send('Hello World!')
     })
 
-    app.get('/users', async (req: Request, res: Response) => {
+    app.get('/users', jwtMiddleware, async (req: Request, res: Response) => {
       const users = await appDataSource.getRepository(User).find();
       res.status(200).json(users);
     });
@@ -48,16 +49,17 @@ app.use(express.json());
     });
 
     app.post('/auth/login', (req: Request, res: Response) => {
-     const { username } = req.body;
+  const { username } = req.body;
 
-     if (!username) {
-       return res.status(400).json({ error: 'Username is required' });
-     }
+  if (!username) {
+    res.status(400).json({ error: 'Username is required' });
+    return;
+  }
 
-     // Generate a JWT token
-     const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
-     res.status(200).json({ token });
-   });
+  const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+  res.status(200).json({ token });
+});
+
 
     app.listen(port, () => {
       console.log(`Server berjalan di http://localhost:${port}`);
@@ -65,4 +67,4 @@ app.use(express.json());
   } catch (error) {
     console.error('Terjadi kesalahan:', error);
   }
-})(); // << Pastikan ini ada!
+})();
