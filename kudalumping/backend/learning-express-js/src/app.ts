@@ -49,7 +49,7 @@ app.use(express.json());
     });
 
     app.post('/auth/login', (req: Request, res: Response) => {
-  const { username } = req.body;
+    const { username } = req.body;
 
   if (!username) {
     res.status(400).json({ error: 'Username is required' });
