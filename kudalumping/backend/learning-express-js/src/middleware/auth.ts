@@ -15,7 +15,7 @@ export const jwtMiddleware = (req: Request, res: Response, next: NextFunction): 
 
   try {
     const decoded = jwt.verify(token, secretKey);
-    (req as any).user = decoded; // gunakan 'as any' jika tidak mau bikin interface
+    (req as any).user = decoded;
     next();
   } catch (error) {
     console.error('JWT verification failed:', error);

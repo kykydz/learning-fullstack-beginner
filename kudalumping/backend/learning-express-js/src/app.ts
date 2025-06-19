@@ -25,7 +25,7 @@ app.use(express.json());
     await appDataSource.initialize();
     console.log('Database connected');
 
-    // ✅ Semua route di dalam sini
+    // Semua route di dalam sini
     app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!')
     })
