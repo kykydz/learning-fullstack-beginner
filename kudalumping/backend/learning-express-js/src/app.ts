@@ -3,11 +3,14 @@ import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import jwt from 'jsonwebtoken';
 import { jwtMiddleware } from './middleware/auth';
+import cors from 'cors';
 
 const app = express();
-const port = 3000;
+const port = 4000;
 const secretKey = 'abc_key_789'
 
+app.use(express.json());
+app.use(cors()); // Izinkan semua origin, termasuk dari frontend
 app.use(express.json());
 
 (async () => {
