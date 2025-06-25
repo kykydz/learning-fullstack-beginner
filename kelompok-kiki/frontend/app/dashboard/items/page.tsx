@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ export default function DetailPage() {
   const searchParams = useSearchParams();
   const url = searchParams.get('url'); // Get the URL from query params
 
-  const [data, setData] = useState<{ [key: string]: any }>(null);
+  const [data, setData] = useState<{ [key: string]: any }>();
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,11 +22,11 @@ export default function DetailPage() {
       try {
         const decodedUrl = decodeURIComponent(url);
         const response = await fetch(decodedUrl);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const result = await response.json();
         setData(result);
       } catch (err) {

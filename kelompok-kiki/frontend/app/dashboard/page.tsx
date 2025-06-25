@@ -1,14 +1,16 @@
-"use client";
+'use client';
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
-  const [pokemonList, setPokemonList] =  useState<{ name: string; url: string }[]>([]);
+  const [pokemonList, setPokemonList] = useState<
+    { name: string; url: string }[]
+  >([]);
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon?limit=20')
-      .then(res => res.json())
-      .then(data => setPokemonList(data.results));
+      .then((res) => res.json())
+      .then((data) => setPokemonList(data.results));
   }, []);
   return (
     <div>
@@ -27,7 +29,12 @@ export default function DashboardPage() {
               <td className="border px-4 py-2">{item.name}</td>
               <td className="border px-4 py-2">{item.url}</td>
               <td className="border px-4 py-2">
-                <Link href={`/dashboard/items?url=${item.url}`} className="text-blue-500">View</Link>
+                <Link
+                  href={`/dashboard/items?url=${item.url}`}
+                  className="text-blue-500"
+                >
+                  View
+                </Link>
               </td>
             </tr>
           ))}
