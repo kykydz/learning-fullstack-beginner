@@ -64,8 +64,8 @@ import bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import jwt from 'jsonwebtoken'; //baru
-import { jwtMiddleware, restrictTo } from './middleware/auth'; //baru
 import cors from 'cors';
+import { restrictTo, jwtMiddleware } from './middleware/auth';
 
 const app = express();
 const port = 3005;
@@ -129,7 +129,7 @@ const appDataSource = new DataSource({
       }
     });
 
-    // === [GET] Ambil semua user ===
+    // // === [GET] Ambil semua user ===
     // app.get('/users', jwtMiddleware, async (req, res) => {
     //   try {
     //     const users = await appDataSource.getRepository(User).find({

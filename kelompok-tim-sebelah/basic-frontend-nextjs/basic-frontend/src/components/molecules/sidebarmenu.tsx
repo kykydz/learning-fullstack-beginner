@@ -7,6 +7,7 @@ export default function SidebarMenu() {
       <SidebarItem href="/dashboard" label="Dashboard" />
       <SidebarItem href="/profile" label="Profile" />
       <SidebarItem href="/auth" label="Get Token" />
+      <SidebarItem href="/user-list" label="User List" />
     </ul>
   );
 }

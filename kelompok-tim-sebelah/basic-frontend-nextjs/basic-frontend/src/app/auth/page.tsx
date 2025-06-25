@@ -71,9 +71,20 @@ import DashboardLayout from '@/components/templates/DashboardLayout';
 
 export default function AuthPage() {
   const [token, setToken] = useState<string | undefined>(undefined);
-  const [username, setUsername] = useState<string>('affa'); // default (ga perlu ganti)
+  const [username, setUsername] = useState<string>('');
 
+  // Ambil username dari localStorage saat halaman dimuat
   useEffect(() => {
+    const savedUsername = localStorage.getItem('selectedUsername');
+    if (savedUsername) {
+      setUsername(savedUsername);
+    }
+  }, []);
+
+  // Fetch token saat username berubah
+  useEffect(() => {
+    if (!username) return;
+
     const login = async () => {
       try {
         const response = await fetch('http://localhost:3005/auth/login', {
@@ -90,6 +101,7 @@ export default function AuthPage() {
 
         setToken(data.token);
         document.cookie = `token=${data.token}; path=/`;
+        localStorage.setItem('selectedUsername', username); // simpan username terakhir
       } catch (error) {
         console.error('Login error:', error);
         setToken('Error fetching token');
@@ -109,6 +121,7 @@ export default function AuthPage() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         >
+          <option value="" disabled>Pilih user</option>
           <option value="affa">Affa</option>
           <option value="joice">Joice</option>
           <option value="umar">Umar</option>
