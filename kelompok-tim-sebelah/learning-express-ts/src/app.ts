@@ -64,15 +64,17 @@ import bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import jwt from 'jsonwebtoken'; //baru
-import { jwtMiddleware } from './middleware/auth'; //baru
+import { jwtMiddleware, restrictTo } from './middleware/auth'; //baru
+import cors from 'cors';
 
 const app = express();
-const port = 3000;
+const port = 3005;
 const secretKey = 'abc_key_123';//baru
 
 // Middleware
 app.use(bodyParser.json());
 app.use(express.json()); //baru
+app.use(cors());
 
 // Inisialisasi PostgreSQL
 const appDataSource = new DataSource({
@@ -128,17 +130,30 @@ const appDataSource = new DataSource({
     });
 
     // === [GET] Ambil semua user ===
-    app.get('/users', jwtMiddleware, async (req, res) => {
+    // app.get('/users', jwtMiddleware, async (req, res) => {
+    //   try {
+    //     const users = await appDataSource.getRepository(User).find({
+    //       order: { id: 'ASC' },
+    //     });
+    //     res.status(200).send(users);
+    //   } catch (error) {
+    //     console.error('Error fetching users:', error);
+    //     res.status(500).send('Internal Server Error');
+    //   }
+    // });
+    
+    //===== ganti nama masing-masing =====
+    app.get('/users', jwtMiddleware, restrictTo('affa'), async (req, res) => {
       try {
         const users = await appDataSource.getRepository(User).find({
           order: { id: 'ASC' },
         });
-        res.status(200).send(users);
+        res.status(200).json(users);
       } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ error: 'Failed to fetch users' });
       }
     });
+
 
     // === [POST] Buat user by ID ===
     // kodinglah di postman untuk tambah data (body->row->json)
@@ -196,23 +211,36 @@ const appDataSource = new DataSource({
       }
     });
 
-    // API to generate JWT token
-    app.post('/auth/login', (req: any, res: any) => {
-      const { username } = req.body;
+    // // API to generate JWT token
+    // app.post('/auth/login', (req: any, res: any) => {
+    //   console.log("Request masuk:", req.body);
+    //   const { username } = req.body;
 
-      if (!username) {
-        return res.status(400).json({ error: 'Username is required' });
+    //   if (!username) {
+    //     return res.status(400).json({ error: 'Username is required' });
+    //   }
+
+    //   // Generate a JWT token
+    //   const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+    //   res.status(200).json({ token });
+    // });
+
+    // ===== ganti nama masing-masing =====
+    app.post('/auth/login', (req, res) => {
+      const { username } = req.body;
+      const allowedUsers = ['affa'];
+
+      if (!username || !allowedUsers.includes(username)) {
+        res.status(401).json({ error: 'Unauthorized username' });
       }
 
-      // Generate a JWT token
       const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
       res.status(200).json({ token });
     });
 
-
     // === Start Server ===
     app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`);
+      console.log(`Server Affa Backend running at http://localhost:${port}`);
     });
   } catch (err) {
     console.error('Error during Data Source initialization:', err);
