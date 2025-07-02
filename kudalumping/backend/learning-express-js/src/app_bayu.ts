@@ -12,12 +12,12 @@ app.use(express.json());
 (async () => {
   try {
     const appDataSource = new DataSource({
-      type: 'mysql',
+      type: 'postgres',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'PRAKREKWEB',
+      port: 5433,
+      username: 'postgres',
+      password: 'mysecretpassword',
+      database: 'postgres',
       entities: [User],
     });
 
@@ -60,7 +60,7 @@ app.use(express.json());
    });
 
     app.listen(port, () => {
-      console.log(`Server berjalan di http://localhost:${port}`);
+      console.log(`Server berjalan di http://localhost:${3000}`);
     });
   } catch (error) {
     console.error('Terjadi kesalahan:', error);

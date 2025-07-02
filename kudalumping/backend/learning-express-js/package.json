@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "npx tsc",
-    "dev": "ts-node src/app.ts"
+    "dev": "ts-node src/app.ts",
+    "dev_bayu": "ts-node src/app_bayu.ts"
   },
   "author": "",
   "license": "ISC",
@@ -14,10 +15,13 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
+    "pg": "^8.16.2",
+    "postgres": "^3.4.7",
     "typeorm": "^0.3.24"
   },
   "devDependencies": {
-    "@types/express": "^5.0.2",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.15.29",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
