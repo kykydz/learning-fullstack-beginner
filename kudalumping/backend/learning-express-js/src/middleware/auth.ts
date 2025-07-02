@@ -1,23 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const secretKey = 'abc_key_123'; // Replace with your actual secret key
+const secretKey = 'abc_key_789';
 
-export const jwtMiddleware = (req: any, res: any, next: NextFunction) => {
-    const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
+export const jwtMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+  const authHeader = req.headers.authorization;
 
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Authorization token is required' });
+    return;
+  }
 
-    if (!token) {
-        return res.status(401).json({ error: 'Authorization token is required' });
-    }
+  const token = authHeader.split(' ')[1];
 
-
-    try {
-        const decoded = jwt.verify(token, secretKey); // Verify the token
-        req.user = decoded; // Attach decoded payload to the request object
-        next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-        console.error('JWT verification failed:', error);
-        return res.status(403).json({ error: 'Invalid or expired token' });
-    }
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    (req as any).user = decoded;
+    next();
+  } catch (error) {
+    console.error('JWT verification failed:', error);
+    res.status(403).json({ error: 'Invalid or expired token' });
+  }
 };
