@@ -1,0 +1,9 @@
+{
+  "type": "postgres",
+  "url": "localhost:5432",
+  "username": "your_username",
+  "password": "your_password",
+  "database": "your_database",
+  "entities": ["src/entities/*.ts"],
+  "synchronize": false
+}
