@@ -58,31 +58,34 @@
 //  console.log(`Server berjalan di http://localhost:${port}`);
 // });
 
-import 'reflect-metadanta';
+import 'reflect-metadata';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import jwt from 'jsonwebtoken'; //baru
+import cors from 'cors';
+import { restrictTo, jwtMiddleware } from './middleware/auth';
 
 const app = express();
-const port = 7777;
+const port = 3005;
 const secretKey = 'abc_key_123';//baru
 
-// Middleware untuk parsing JSON body
+// Middleware
 app.use(bodyParser.json());
 app.use(express.json()); //baru
+app.use(cors());
 
 // Inisialisasi PostgreSQL
 const appDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'umar',        // Ganti dengan username PostgreSQL kamu
-  password: '1234',            // Ganti jika ada password PostgreSQL
-  database: 'expressts',    // Ganti jika pakai nama DB lain
+  username: 'umar',
+  password: '1234',
+  database: 'expressts',
   entities: [User],
-  synchronize: true,       // Jangan aktifkan di production
+  synchronize: true, // Jangan aktifkan ini di production
 });
 
 (async () => {
@@ -90,21 +93,81 @@ const appDataSource = new DataSource({
     await appDataSource.initialize();
     console.log('Database connected');
 
-    // === [GET] READ ===
-    app.get('/users', async (req, res) => {
-      const user = await appDataSource.getRepository(User).find({
-        where: { name: 'John Doe' },
-        take: 10,
-        order: { id: 'ASC' },
-      });
-      console.log('Fetched users:', user);
-      res.status(200).send(user);
+    // === [GET] Ambil user dengan nama depan "Umar" ===
+    app.get('/users/ambil', async (req, res) => {
+      console.log("QUERY => SELECT * FROM users WHERE name ILIKE 'Umar%' ORDER BY id ASC");
+
+      try {
+        const users = await appDataSource
+          .getRepository(User)
+          .createQueryBuilder('user')
+          .where('user.name ILIKE :namePrefix', { namePrefix: 'Umar%' })
+          .orderBy('user.id', 'ASC')
+          .getMany();
+
+        res.status(200).send(users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).send('Internal Server Error');
+      }
     });
 
-    // === [POST] CREATE/UPDATE by ID ===
+    // === [GET] Ambil user by ID ===
+    app.get('/users/:id', async (req, res) => {
+      const id = Number(req.params.id);
+
+      try {
+        const user = await appDataSource.getRepository(User).findOneBy({ id });
+        if (user) {
+          res.status(200).send(user);
+        } else {
+          res.status(404).send({ message: 'User not found' });
+        }
+      } catch (error) {
+        console.error('Error fetching user by ID:', error);
+        res.status(500).send('Internal Server Error');
+      }
+    });
+
+    // // === [GET] Ambil semua user ===
+    // app.get('/users', jwtMiddleware, async (req, res) => {
+    //   try {
+    //     const users = await appDataSource.getRepository(User).find({
+    //       order: { id: 'ASC' },
+    //     });
+    //     res.status(200).send(users);
+    //   } catch (error) {
+    //     console.error('Error fetching users:', error);
+    //     res.status(500).send('Internal Server Error');
+    //   }
+    // });
+    
+    //===== ganti nama masing-masing =====
+    app.get('/users', jwtMiddleware, restrictTo('umar'), async (req, res) => {
+      try {
+        const users = await appDataSource.getRepository(User).find({
+          order: { id: 'ASC' },
+        });
+        res.status(200).json(users);
+      } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch users' });
+      }
+    });
+
+
+    // === [POST] Buat user by ID ===
+    // kodinglah di postman untuk tambah data (body->row->json)
+    // kodingan: {"name": "Affa Hurrarul", "email": "affa@example.com"} disesuaikan dengan entitas di tabel
+    // cek entitas/kolomnya: (1) file src/entities/user.entity.ts
+    // (2) bisa dari cmd, buka database dari postgres yang udah dibuat: login postgres -> \c namadb -> \dt -> select * from users
     app.post('/users/:id', async (req, res) => {
       const id = Number(req.params.id);
       const { name, email } = req.body;
+
+      if (!name || !email) {
+        res.status(400).send({ message: 'Name and email are required.' });
+      }
+
       try {
         const updatedUser = await appDataSource.getRepository(User).save({
           id,
@@ -118,41 +181,68 @@ const appDataSource = new DataSource({
       }
     });
 
-    // === [PATCH] UPDATE ONLY ===
+    // === [PATCH] Update sebagian data user ===
+    // kodinglah di postman untuk update spesifik user (body->row->json)
+    // kodingan: {"name": "Affa Ava"} apa yang mau diupdate, bisa nama aja or sama email juga
+    // hasil ini akan muncul ketika semua tabel (/users) di tampilkan atau hanya ID tersebut yang dicari
+    // muncul di url localhost:3000/user/1 -> id usernya sesuai dengan nomor berapa yang barusan diupdate
     app.patch('/users/:id', async (req, res) => {
       const id = Number(req.params.id);
       const { name, email } = req.body;
-      try {
-        const result = await appDataSource
-          .getRepository(User)
-          .update({ id }, { name, email });
 
-        res.status(200).send(result);
+      if (!name && !email) {
+        res.status(400).send({
+          message: 'At least one field (name or email) must be provided.',
+        });
+      }
+
+      try {
+        const result = await appDataSource.getRepository(User).update({ id }, { name, email });
+
+        if (result.affected === 1) {
+          const updatedUser = await appDataSource.getRepository(User).findOneBy({ id });
+          res.status(200).send(updatedUser);
+        } else {
+          res.status(404).send({ message: 'User not found' });
+        }
       } catch (error) {
         console.error('Error updating user:', error);
         res.status(500).send('Internal Server Error');
       }
     });
 
-    // API to generate JWT token
-        app.post('/auth/login', (req: any, res: any) => {
-          const { username } = req.body;
-    
-          if (!username) {
-            return res.status(400).json({ error: 'Username is required' });
-          }
-    
-          // Generate a JWT token
-          const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
-          res.status(200).json({ token });
-        });
+    // // API to generate JWT token
+    // app.post('/auth/login', (req: any, res: any) => {
+    //   console.log("Request masuk:", req.body);
+    //   const { username } = req.body;
 
-    // Start server
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`);
+    //   if (!username) {
+    //     return res.status(400).json({ error: 'Username is required' });
+    //   }
+
+    //   // Generate a JWT token
+    //   const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+    //   res.status(200).json({ token });
+    // });
+
+    // ===== ganti nama masing-masing =====
+    app.post('/auth/login', (req, res) => {
+      const { username } = req.body;
+      const allowedUsers = ['umar'];
+
+      if (!username || !allowedUsers.includes(username)) {
+        res.status(401).json({ error: 'Unauthorized username' });
+      }
+
+      const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+      res.status(200).json({ token });
     });
 
+    // === Start Server ===
+    app.listen(port, () => {
+      console.log(`Server Umar Backend running at http://localhost:${port}`);
+    });
   } catch (err) {
-    console.error('Error during Data Source initialization', err);
+    console.error('Error during Data Source initialization:', err);
   }
 })();
