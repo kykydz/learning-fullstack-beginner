@@ -1,21 +1,23 @@
+//src/app/auth/page.tsx
+
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function AuthPage() {
-    const [mode, setMode] = useState<'login' | 'register'>('login');
-    const [username, setUsername] = useState('');
+    const [mode, setMode] = useState<'login' | 'register'>('login'); //state untuk mode tampilan: login atau register
+    const [username, setUsername] = useState(''); //state input user
     const [password, setPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
-    const router = useRouter();
+    const router = useRouter(); //navigasi
 
     const showError = (message: string) => {
         setErrorMsg(message);
         setUsername('');
         setPassword('');
-        setTimeout(() => setErrorMsg(''), 3000);
+        setTimeout(() => setErrorMsg(''), 3000); //error 3 detik
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -38,7 +40,8 @@ export default function AuthPage() {
             const data = await response.json();
 
             if (!response.ok) {
-                showError(mode === 'login' ? 'Login gagal' : 'Register gagal');
+                //ambil error dari backend
+                showError(data.error);
                 return;
             }
 
@@ -47,10 +50,11 @@ export default function AuthPage() {
                 localStorage.setItem('selectedUsername', username);
                 router.push('/dashboard');
             } else {
-                setSuccessMsg('Registrasi berhasil! Silakan login.');
+                setSuccessMsg(data.message || 'Registrasi berhasil! Silakan login.');
                 setMode('login');
                 setUsername('');
                 setPassword('');
+                setTimeout(() => setSuccessMsg(''), 3000); //error 3 detik
             }
         } catch (err) {
             showError(mode === 'login' ? 'Login gagal' : 'Register gagal');

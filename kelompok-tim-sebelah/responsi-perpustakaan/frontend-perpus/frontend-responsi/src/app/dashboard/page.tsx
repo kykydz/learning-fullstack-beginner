@@ -11,9 +11,25 @@ export default function DashboardPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      router.push('/auth'); // redirect ke halaman login
+      router.push('/auth');
+      return;
     }
-  }, []);
+
+    // Verifikasi token ke server
+    fetch('http://localhost:3002/auth/verify', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Token tidak valid');
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('selectedUsername');
+        router.push('/auth');
+      });
+  }, [router]);
 
   return (
   <div>
