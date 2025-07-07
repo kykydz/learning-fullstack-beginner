@@ -85,7 +85,7 @@ app.use(express.json()); // Agar bisa baca req.body
           role: user.role,
         },
         'abc_key_123',
-        { expiresIn: '1m' }
+        { expiresIn: '1h' }
       );
 
       res.json({ token });
