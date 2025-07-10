@@ -25,6 +25,15 @@ app.post("/count", (req, res) => {
   }, 200);
 });
 
+app.post("/async-error", async (req, res) => {
+  try {
+    const result = await Promise.reject("Oops!");
+    res.send(result);
+  } catch (err) {
+    res.status(500).send(`Terjadi error async: ${err}`);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);
 });
