@@ -1,6 +1,6 @@
 import http from 'http';
 
-const port = 9002; // 4 digit terakhir NIM: 9002
+const port = 9002;
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
