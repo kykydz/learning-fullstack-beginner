@@ -1,0 +1,2 @@
+- Nama: Cindy Fatika 
+- NIM: 221054010 
