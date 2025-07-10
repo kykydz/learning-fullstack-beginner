@@ -7,13 +7,13 @@ app.use(express.json());
 
 let globalCounter = 0;
 
-// GET /hello → menyapa
-app.get("/hello", (req: Request, res: Response) => {
+// GET /API/hello → menyapa
+app.get("/API/hello", (req: Request, res: Response) => {
   res.status(200).send("Hello! Welcome to the server.");
 });
 
-// PATCH /hello → kirim balik pesan dari body.message
-app.patch("/hello", (req: Request, res: Response) => {
+// PATCH /API/hello → mengirim ulang pesan
+app.patch("/API/hello", (req: Request, res: Response) => {
   const { message } = req.body;
 
   if (!message) {
@@ -23,8 +23,8 @@ app.patch("/hello", (req: Request, res: Response) => {
   res.status(200).json({ reply: `Pesan: ${message}` });
 });
 
-// POST /count → kirim angka 1–10 & update global counter
-app.post("/count", (req: Request, res: Response) => {
+// POST /API/count → menampilkan angka dan menghitung akses
+app.post("/API/count", (req: Request, res: Response) => {
   const output: string[] = [];
 
   for (let i = 1; i <= 10; i++) {
@@ -38,16 +38,16 @@ app.post("/count", (req: Request, res: Response) => {
   });
 });
 
-// POST /async-error → simulasi error async
-app.post("/async-error", async (req: Request, res: Response) => {
+// ✅ POST /API/async-error → menangani error async
+app.post("/API/async-error", async (req: Request, res: Response) => {
   try {
-    const result = await Promise.reject("Terjadi error async!");
-    res.send(result);
+    // Simulasi error asynchronous
+    await Promise.reject(new Error("Simulasi error async terjadi!"));
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: (err as Error).message });
   }
 });
 
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`🚀 Server running on http://localhost:${port}`);
 });
