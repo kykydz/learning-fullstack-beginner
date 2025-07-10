@@ -6,25 +6,21 @@ const port = 3000;
 app.use(express.json()); // aktifkan parser JSON
 
 // 👉 /hello
-app.get("/hello", (req, res) => {
+app.get("/hello", (_req, res) => {
   res.status(200).send("Hello");
 });
 
 // 👉 /count
-app.post("/count", (req, res) => {
-  let count = 0;
-  let output = "";
-
-  while (count < 10) {
-    output += `Count: ${count}\n`;
-    count++;
+app.post("/count", (_req, res) => {
+  let output = [];
+  for (let count = 0; count < 10; count++) {
+    output.push(`Count: ${count}`);
   }
-
-  res.send(output);
+  res.status(200).send(output.join("<br>"));
 });
 
 // 👉 /async-error
-app.post("/async-error", async (req, res) => {
+app.post("/async-error", async (_req, res) => {
   try {
     const result = await Promise.reject("Oops!");
     res.send(result);
