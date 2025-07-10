@@ -9,7 +9,7 @@ app.get("/hello", (req, res) => {
   res.status(200).send("Hello, world!");
 });
 
-// memperbaiki logika dan cara pengiriman response
+// memperabiki logika dan cara pengiriman response
 app.post("/count", (req, res) => {
   let count = 0;
   let result = "";
