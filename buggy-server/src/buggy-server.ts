@@ -2,14 +2,14 @@ import express from "express";
 const app = express();
 const port = 3000;
 
-app.use(express.json()); // Aktifkan middleware JSON agar bisa baca req.body
+app.use(express.json()); // mengaktifkan middleware JSON agar bisa baca req.body
 
-// ✅ Perbaiki method PATCH → GET, dan logika response
+// memperbaiki method PATCH ke GET
 app.get("/hello", (req, res) => {
   res.status(200).send("Hello, world!");
 });
 
-// ✅ Perbaiki infinite loop dan cara pengiriman response
+// memperbaiki logika dan cara pengiriman response
 app.post("/count", (req, res) => {
   let count = 0;
   let result = "";
@@ -22,7 +22,7 @@ app.post("/count", (req, res) => {
   res.send(result);
 });
 
-// ✅ Perbaiki async function (harus async dan pakai try-catch)
+// memperbaiki async function (harus async dan pakai try-catch)
 app.post("/async-error", async (req, res) => {
   try {
     const result = await Promise.reject("Oops!");
