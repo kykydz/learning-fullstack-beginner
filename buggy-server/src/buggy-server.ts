@@ -4,7 +4,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.patch("/hello", (req, res) => {
+app.patch("/hello", (req, res) => { //api ini dicek terakhir karena baru sukses di akhir
 const { error } = req.body;
   if (!error) {
     return res.status(500).send("Internal Server Error");
