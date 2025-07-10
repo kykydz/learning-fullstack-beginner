@@ -1,0 +1,28 @@
+{
+  "name": "learning-fullstack-beginner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node basic-server/bayu_221054013.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kykydz/learning-fullstack-beginner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/kykydz/learning-fullstack-beginner/issues"
+  },
+  "homepage": "https://github.com/kykydz/learning-fullstack-beginner#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
