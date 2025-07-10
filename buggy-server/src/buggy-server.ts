@@ -26,7 +26,7 @@ app.post("/count", (req, res) => {
 app.post("/async-error", async (req, res) => {
   try {
     const result = await Promise.reject("Oops!");
-    res.send(result);
+    res.send(result); // baris ini ga dijalankan
   } catch (err) {
     res.status(500).send({ error: err });
   }
